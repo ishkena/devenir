@@ -7,6 +7,7 @@ This project should facilitate preparation for consulting case interviews by all
  - Offers ability to understand weaknesses
  - Ability to be recognized for group leadership
  - Ability to be referred to recruiters
+ - Track service hours of interviewers
 ##### Group utility
  - Ability to conduct skills audit
  - Ability to accurately grade case difficulty
@@ -33,42 +34,74 @@ Admins should be able to:
 Admins should be able to:
  - View all data
  - View analytics dashboard
-### Models
-##### User
- - First name
- - Last name
- - Email
- - Password (?)
- - Total cases
- - Total casing time
- - Average grade
- - Admin boolean
-
+### 8 Models
 ##### Case
- - Case name
- - Case book
- - Case year
- - Case tested skills
- - Case average grade
- - Case average perceived difficulty
- - Case frequency
+|case_id|INT|
+|---|---|
+|(FK) book_id|INT|
+|name|VARCHAR(50)|
+|industry|VARCHAR(50)|
+|type|VARCHAR(50)|
+|average_grade|DEC(2, 3)|
+|average_confidence|DEC(2, 3)|
+|frequency|INT|
+
+##### Book
+|book_id|INT|
+|---|---|
+|name|VARCHAR(50)|
+|year|INT|
+|case_count|INT|
+|frequency|INT|
+|average_grade|DEC(2, 3)|
+|average_confidence|DEC(2, 3)|
+
+##### CaseSkill
+|case_skill_id|INT|
+|---|---|
+|(FK) case_id|INT|
+|(FK) skill_id|INT|
+|has_skill|BOOL|
+
+##### Skill
+|skill_id|INT|
+|---|---|
+|skill_name|VARCHAR(30)|
+
+##### User
+|user_id|INT|
+|-----------|---|
+|first_name|VARCHAR(30)|
+|last_name|VARCHAR(30)|
+|email|VARCHAR(50)|
+|password|VARCHAR(50)|
+|case_count|INT|
+|interviewee_time|INT|
+|interviewer_time|INT|
+|average_grade|DEC(2, 3)|
+|average_confidence|DEC(2, 3)|
+|is_admin|BOOL|
 
 ##### Interview
- - Interviewee
- - Interviewer
- - Date
- - Case
- - Interviewee perceived difficulty
- - Interviewee perceived performance
- - Graded performance
-    - Structure
-    - Math
-    - Etc.
- - Duration
- - Interviewee notes
- - Interviewer notes
+|interview_id|INT|
+|---|---|
+|(FK) case_id|INT|
+|date|DATETIME|
+|grade|DEC(2, 3)|
+|duration|INT|
 
-##### Case book (?)
- - List of cases
- - Number of cases
- - Frequency
+##### Interviewer
+|interviewer_id|INT|
+|---|---|
+|(FK) user_id|INT|
+|(FK) interview_id|INT|
+|interviewer_notes|VARCHAR(1000)|
+
+##### Interviewee
+|interviewee_id|INT|
+|---|---|
+|(FK) user_id|INT|
+|(FK) interview_id|INT|
+|difficulty|INT|
+|confidence|INT|
+|interviewee_notes|VARCHAR(1000)|
